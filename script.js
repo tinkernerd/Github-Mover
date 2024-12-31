@@ -1,29 +1,39 @@
-        document.getElementById('refreshFolders').addEventListener('click', () => {
-            const repoUrl = document.getElementById('repoUrl').value;
-            if (!repoUrl) {
-                alert('Please enter a GitHub repository URL first.');
-                return;
+document.getElementById('refreshFolders').addEventListener('click', () => {
+    const repoUrl = document.getElementById('repoUrl').value;
+    if (!repoUrl) {
+        alert('Please enter a GitHub repository URL first.');
+        return;
+    }
+
+    // Call API to fetch folder structure from GitHub repo
+    fetch(`/api/getFolders?repoUrl=${encodeURIComponent(repoUrl)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Server responded with status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const folderSelect = document.getElementById('folderSelect');
+            folderSelect.innerHTML = '<option value="">-- Select a folder --</option>';
+
+            if (!data.folders || !Array.isArray(data.folders)) {
+                throw new Error('Unexpected response format: folders missing or not an array');
             }
 
-            // Call API to fetch folder structure from GitHub repo
-            fetch(`/api/getFolders?repoUrl=${encodeURIComponent(repoUrl)}`)
-                .then(response => response.json())
-                .then(data => {
-                    const folderSelect = document.getElementById('folderSelect');
-                    folderSelect.innerHTML = '<option value="">-- Select a folder --</option>';
-
-                    data.folders.forEach(folder => {
-                        const option = document.createElement('option');
-                        option.value = folder.path;
-                        option.textContent = folder.name;
-                        folderSelect.appendChild(option);
-                    });
-                })
-                .catch(err => {
-                    console.error('Error fetching folders:', err);
-                    alert('Failed to fetch folders. Please check the repository URL.');
-                });
+            data.folders.forEach(folder => {
+                const option = document.createElement('option');
+                option.value = folder.path;
+                option.textContent = folder.name;
+                folderSelect.appendChild(option);
+            });
+        })
+        .catch(err => {
+            console.error('Error fetching folders:', err);
+            alert('Failed to fetch folders. Please check the repository URL or try again.');
         });
+});
+
 
         document.getElementById('uploadFile').addEventListener('click', () => {
             const imageUrl = document.getElementById('imageUrl').value;
