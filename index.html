@@ -4,51 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image to GitHub Uploader</title>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <title>GitHub Folder Fetcher</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Image to GitHub Uploader</h1>
+    <div id="app">
+        <h1>GitHub File Uploader</h1>
 
-        <div class="form-group">
-            <label for="imageUrl">Image URL</label>
-            <input type="url" id="imageUrl" placeholder="Enter the image URL">
-        </div>
+        <!-- User Input Section -->
+        <div class="input-section">
+            <label for="githubUser">GitHub Username:</label>
+            <input type="text" id="githubUser" placeholder="Enter GitHub username" />
 
-        <div class="form-group">
-            <label for="repoUrl">GitHub Repository URL</label>
-            <input type="url" id="repoUrl" placeholder="Enter the GitHub repository URL">
-        </div>
+            <label for="repoName">Repository Name:</label>
+            <input type="text" id="repoName" placeholder="Enter repository name" />
 
-        <div class="form-group">
+            <label for="githubKey">GitHub Token:</label>
+            <input type="password" id="githubKey" placeholder="Enter GitHub token" />
+
             <button id="refreshFolders">Refresh Folders</button>
         </div>
 
-        <div class="form-group">
-            <label for="folderSelect">Select Folder</label>
+        <!-- Folder Selection and File Renaming -->
+        <div class="selection-section">
+            <label for="folderSelect">Select Folder:</label>
             <select id="folderSelect">
                 <option value="">-- Select a folder --</option>
             </select>
-        </div>
 
-        <div class="form-group">
-            <label for="fileName">Rename File (Optional)</label>
-            <input type="text" id="fileName" placeholder="Enter new file name (optional)">
-        </div>
+            <label for="fileName">Rename File:</label>
+            <input type="text" id="fileName" placeholder="Enter new file name (optional)" />
 
-        <div class="form-group">
-            <label for="githubKey">GitHub Personal Access Token</label>
-            <input type="password" id="githubKey" placeholder="Enter your GitHub personal access token">
-        </div>
-
-        <div class="form-group">
-            <button id="uploadFile">Upload and Commit File</button>
+            <button id="uploadFile">Upload File</button>
         </div>
     </div>
+
+    <script src="scripts.js"></script>
 </body>
 
 </html>
