@@ -3,6 +3,7 @@ document.getElementById('refreshFolders').addEventListener('click', () => {
     const repoName = document.getElementById('repoName').value.trim();
     const githubToken = document.getElementById('githubKey').value.trim();
 
+    // Validate inputs
     if (!githubUser || !repoName || !githubToken) {
         alert('Please fill out all fields (GitHub Username, Repository Name, and Token).');
         return;
@@ -10,6 +11,7 @@ document.getElementById('refreshFolders').addEventListener('click', () => {
 
     const repoUrl = `https://github.com/${githubUser}/${repoName}`;
 
+    // Call the API to fetch folders
     fetch(`/api/getFolders?repoUrl=${encodeURIComponent(repoUrl)}&githubToken=${encodeURIComponent(githubToken)}`)
         .then(response => {
             if (!response.ok) {
@@ -31,43 +33,5 @@ document.getElementById('refreshFolders').addEventListener('click', () => {
         .catch(err => {
             console.error('Error fetching folders:', err);
             alert('Failed to fetch folders. Please check the repository name, username, and token.');
-        });
-});
-
-document.getElementById('uploadFile').addEventListener('click', () => {
-    const folder = document.getElementById('folderSelect').value;
-    const fileName = document.getElementById('fileName').value.trim();
-    const githubToken = document.getElementById('githubKey').value.trim();
-
-    if (!folder || !githubToken) {
-        alert('Please select a folder and provide a GitHub token.');
-        return;
-    }
-
-    const payload = {
-        folder,
-        fileName,
-        githubToken,
-    };
-
-    fetch('/api/uploadFile', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Server responded with status ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            alert('File uploaded successfully!');
-        })
-        .catch(err => {
-            console.error('Error uploading file:', err);
-            alert('Failed to upload file. Please try again.');
         });
 });

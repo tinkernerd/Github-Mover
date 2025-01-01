@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 async function handler(req, res) {
     try {
         if (req.method !== 'GET') {
@@ -9,13 +7,13 @@ async function handler(req, res) {
 
         const { repoUrl, githubToken } = req.query;
 
-        // Validate required parameters
+        // Validate inputs
         if (!repoUrl || !githubToken) {
             res.status(400).json({ error: 'Missing required parameters: repoUrl or githubToken' });
             return;
         }
 
-        // Extract owner and repo from the URL
+        // Proceed with GitHub API call
         const match = /github\.com\/(.+?)\/(.+?)(\.git|$)/.exec(repoUrl);
         if (!match) {
             throw new Error('Invalid GitHub repository URL');
@@ -25,7 +23,6 @@ async function handler(req, res) {
 
         console.log(`Owner: ${owner}, Repo: ${repo}`); // Debugging log
 
-        // Call GitHub API
         const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/`;
         const response = await fetch(apiUrl, {
             headers: {
@@ -35,8 +32,6 @@ async function handler(req, res) {
             },
         });
 
-        console.log(`GitHub API Response Status: ${response.status}`); // Debugging log
-
         if (!response.ok) {
             const errorDetails = await response.text();
             console.error('GitHub API Error:', errorDetails); // Log GitHub API error
@@ -45,7 +40,6 @@ async function handler(req, res) {
 
         const data = await response.json();
 
-        // Filter for directories
         const folders = data
             .filter(item => item.type === 'dir')
             .map(folder => ({ path: folder.path, name: folder.name }));
@@ -54,7 +48,7 @@ async function handler(req, res) {
 
         res.status(200).json({ folders });
     } catch (error) {
-        console.error('Error in /api/getFolders:', error.message); // Log the error
+        console.error('Error in /api/getFolders:', error.message);
         res.status(500).json({ error: error.message });
     }
 }
