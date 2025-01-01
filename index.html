@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Folder Fetcher</title>
+    <title>GitHub File Uploader</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -26,6 +26,12 @@
             <button id="refreshFolders">Refresh Folders</button>
         </div>
 
+        <!-- Image Input Section -->
+        <div class="image-section">
+            <label for="imageUrl">Image URL:</label>
+            <input type="text" id="imageUrl" placeholder="Enter the image URL" />
+        </div>
+
         <!-- Folder Selection and File Renaming -->
         <div class="selection-section">
             <label for="folderSelect">Select Folder:</label>
@@ -38,6 +44,9 @@
 
             <button id="uploadFile">Upload File</button>
         </div>
+
+        <!-- Status Message -->
+        <div id="status" style="margin-top: 20px; font-weight: bold; color: #333;">Status: Ready</div>
     </div>
 
     <script src="scripts.js"></script>
